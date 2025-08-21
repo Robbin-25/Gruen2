@@ -360,8 +360,6 @@
         </div>
     </div>
 </section>
-
-
   
 
   <script type="module" src="/src/main.js"></script>
@@ -421,6 +419,45 @@ gsap.utils.toArray(".floating-dot").forEach(dot => {
   }
   animateDot(); // Animation starten
 });
+
+      // Form submission
+        const form = document.getElementById('contact-form');
+        const successMessage = document.getElementById('success-message');
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Show success message
+            successMessage.classList.remove('hidden');
+            
+            // Reset form
+            form.reset();
+            
+            // Hide success message after 5 seconds
+            setTimeout(() => {
+                successMessage.classList.add('hidden');
+            }, 5000);
+            
+            // Scroll to success message
+            successMessage.scrollIntoView({ 
+                behavior: 'smooth',
+                block: 'center'
+            });
+        });
+
+        // Enhanced form interactions
+        const formInputs = document.querySelectorAll('input, textarea');
+        
+        formInputs.forEach(input => {
+            input.addEventListener('focus', (e) => {
+                e.target.parentElement.classList.add('-translate-y-1');
+                e.target.parentElement.classList.add('transition-transform', 'duration-300');
+            });
+            
+            input.addEventListener('blur', (e) => {
+                e.target.parentElement.classList.remove('-translate-y-1');
+            });
+        });
 
   </script>
 </body>
