@@ -3,13 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Web-Plants</title>
-  <link rel="icon" type="image/png" href="Logoicon.png">
+  <title>Professional Digital Solutions</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <link href="output.css" rel="stylesheet">
- <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-
+  <link href="/src/output.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 <style>
 .nav-links{
@@ -70,7 +68,7 @@
 <body class="bg-black text-white overflow-x-hidden">
 
   <nav class="bg-gray-800 flex fixed justify-between items-center w-[96%] m-[2%] p-2 px-4 z-50 rounded-2xl">
-    <img src="Frame 547318936.svg" class="h-10" alt="#">
+    <img src="src/Logo.svg" class="h-10" alt="#">
     <ul class="flex-row gap-6 items-center hidden md:flex">
       <li class="cursor-pointer text-xl">Home</li>
       <li class="cursor-pointer text-xl">Shop</li>
@@ -92,13 +90,6 @@
     <li class="bg-white rounded-lg p-1 text-black cursor-pointer text-xl">Kontakt</li>
   </ul>
 
-  <!-- Loader (eine der Hero Cards groß zentriert) -->
-  <div id="loader" class="fixed inset-0 flex items-center justify-center bg-black z-50">
-    <div class="w-96 h-64 bg-white rounded-xl shadow-2xl flex items-center justify-center">
-      <h1 class="text-4xl font-bold text-black">Web<span class="text-gray-600">Planst</span></h1>
-    </div>
-  </div>
-
   <!-- Hero Section -->
   <section class="relative min-h-screen flex items-center pt-20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full grid lg:grid-cols-2 gap-12 items-center">
@@ -114,11 +105,11 @@
           </p>
         </div>
         <div class="flex space-x-4">
-          <button class="bg-white text-black px-8 py-4 rounded-lg font-semibold hover:bg-gray-200 transition">
-            Get Started
+          <button class="bg-white text-black px-8 py-4 rounded-lg font-semibold hover:bg-gray-200 transition relative overflow-hidden cursor-pointer" data-magnet>
+            <span class="button-text relative z-10 inline-block pointer-events-none">Get Started</span>
           </button>
-          <button class="border border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white hover:text-black transition">
-            View Portfolio
+          <button class="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white hover:text-black transition relative overflow-hidden cursor-pointer" data-magnet>
+              <span class="button-text relative z-10 inline-block pointer-events-none">View Portfolio</span>
           </button>
         </div>
       </div>
@@ -234,7 +225,7 @@
     </div>
   </section>
 
-  <section class="bg-black text-white font-inter leading-relaxed">
+    <section class="bg-black text-white font-inter leading-relaxed">
     <!-- Main Content -->
     <div class="min-h-screen py-16">
         <div class="max-w-6xl mx-auto px-6">
@@ -361,7 +352,6 @@
         </div>
     </div>
 </section>
-  
 
   <script type="module" src="/src/main.js"></script>
 
@@ -375,34 +365,43 @@
     }
 
 
-
     gsap.registerPlugin(ScrollTrigger);
 
-    // Loader Animation
-    gsap.to("#loader", {
-      opacity: 0,
-      delay: 0,
-      duration: 0,
-      onComplete: () => document.getElementById("loader").style.display = "none"
-    });
+      // Button
+        document.querySelectorAll('[data-magnet]').forEach(btn => {
+            const txt = btn.querySelector('.button-text');
+            
+            btn.onmousemove = e => {
+                const rect = btn.getBoundingClientRect();
+                const x = (e.clientX - rect.left - rect.width/2) * 0.3;
+                const y = (e.clientY - rect.top - rect.height/2) * 0.3;
+                gsap.to(txt, {duration: 0.3, x, y, ease: "power2.out"});
+                gsap.to(btn, {duration: 0.3, scale: 1.05});
+            };
+            
+            btn.onmouseleave = () => {
+                gsap.to(txt, {duration: 0.5, x: 0, y: 0, ease: "elastic.out(1, 0.3)"});
+                gsap.to(btn, {duration: 0.3, scale: 1});
+            };
+        });
 
     // Hero Cards Fly-In
-    gsap.from("#card1", {x: 400, y: -200, opacity: 0, rotate: 30, duration: 1.5, delay: 2.2, ease: "power3.out"});
-    gsap.from("#card2", {x: -400, y: 200, opacity: 0, rotate: -30, duration: 1.5, delay: 2.4, ease: "power3.out"});
-    gsap.from("#card3", {y: -400, opacity: 0, rotate: 45, duration: 1.5, delay: 2.6, ease: "power3.out"});
+    gsap.from("#card1", {x: 400, y: -200, opacity: 0, rotate: 30, duration: 1.5, delay: 0.2, ease: "power3.out"});
+    gsap.from("#card2", {x: -400, y: 200, opacity: 0, rotate: -30, duration: 1.5, delay: 0.4, ease: "power3.out"});
+    gsap.from("#card3", {y: -400, opacity: 0, rotate: 45, duration: 1.5, delay: 0.6, ease: "power3.out"});
 
     // Service Cards Animation
     gsap.utils.toArray(".service-card").forEach((card, i) => {
       gsap.from(card, {
         scrollTrigger: {
           trigger: card,
-          start: "top 80%",
-          toggleActions: "play none none reset",
+          start: "top 70%",
+          toggleActions: "play none none none",
         },
         opacity: 0,
-        y: 50,
+        y: 100,
         duration: 1,
-        delay: i * 0.2,
+        delay: i * 0.3,
         ease: "power2.out",
       });
     });
@@ -415,11 +414,12 @@ gsap.utils.toArray(".floating-dot").forEach(dot => {
       y: gsap.utils.random(-100, 100),
       duration: gsap.utils.random(3, 6),
       ease: "sine.inOut",
-      onComplete: animateDot // nach Ende erneut aufrufen
+      onComplete: animateDot
     });
   }
   animateDot(); // Animation starten
 });
+
 
       // Form submission
         const form = document.getElementById('contact-form');
@@ -459,6 +459,7 @@ gsap.utils.toArray(".floating-dot").forEach(dot => {
                 e.target.parentElement.classList.remove('-translate-y-1');
             });
         });
+
 
   </script>
 </body>
