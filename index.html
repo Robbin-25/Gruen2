@@ -224,7 +224,7 @@
     <div class="bg-black"></div>
 
     <!-- Apps Card -->
-    <div class="service-box apps-card border border-gray-700 rounded-2xl h-auto relative overflow-hidden shimmer group bg-[#181818] flex flex-col">
+    <div class="service-box apps-card border border-gray-700 rounded-2xl h-120 relative overflow-hidden shimmer group bg-[#181818] flex flex-col">
       <h2 class="text-white text-2xl font-semibold pt-4 px-4">Apps</h2>
       <p class="text-gray-400 text-sm leading-relaxed p-4 mb-8">
         High-performance mobile applications that connect with your customers and streamline experiences.
@@ -239,7 +239,7 @@
     <div class="bg-black relative top-16 z-30"></div>
 
     <!-- Analytics Card -->
-    <div class="service-box analytics border border-gray-700 rounded-2xl h-auto relative overflow-hidden shimmer group bg-[#181818] flex flex-col">
+    <div class="service-box analytics border border-gray-700 rounded-2xl h-120 relative overflow-hidden shimmer group bg-[#181818] flex flex-col">
       <h2 class="text-white text-2xl font-semibold pt-4 px-4">Analytics</h2>
       <p class="text-gray-400 text-sm leading-relaxed p-4 mb-8">
         Data-driven insights to optimize performance and grow your business with actionable intelligence.
@@ -478,26 +478,35 @@
     });
 
 
-    // Scrub Animation für Handy & Analytics-Karte
-    gsap.registerPlugin(ScrollTrigger);
+// Handy cart Animation
+let tlHandy = gsap.timeline({
+  scrollTrigger: {
+    trigger: ".handycart",
+    start: "top top",
+    end: "+=700",
+    scrub: true,
+    pin: true,
+  }
+});
 
-    // Handy bewegt sich etwas nach unten (langsamer)
-
-    gsap.to([".apps-card", ".analytics", ".handy"], {
-      y: (i, target) => {
-        // Unterschiedliche Bewegung pro Element
-        if (target.classList.contains("handy")) return 220;     // Handy: schneller / weiter runter
-        if (target.classList.contains("analytics")) return 250; // Analytics-Karte: langsamer
-        if (target.classList.contains("apps-card")) return 150; // Apps-Karte: noch langsamer
-      },
-      ease: "none",
-      scrollTrigger: {
-        trigger: ".handycart", // ganze Section
-        start: "40% 50%",
-        end: "80% 50%",
-        scrub: true,
-      }
-    });
+// Apps-Karte
+tlHandy.fromTo(".apps-card",
+  { y: 150 },
+  { y: 0, ease: "none" },
+  0 // startet gleichzeitig
+);
+// Analytics-Karte
+tlHandy.fromTo(".analytics",
+  { y: 250 },
+  { y: 0, ease: "none" },
+  0 // startet gleichzeitig
+);
+// Handy (geht diagonal!)
+tlHandy.fromTo(".handy",
+  { y: 820, x: -350 },
+  { y: 0,   x: 0, ease: "none" },
+  0 // ebenfalls gleichzeitig
+);
 
 
     // Floating Dots random movement
